@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Reusable {
     public static WebDriver driver;
-    public static void openBrowser(String browser){
+    public static WebDriver openBrowser(String browser){
         if(browser.equalsIgnoreCase("Chrome")){
             WebDriverManager.chromedriver().setup();
             ChromeOptions option = new ChromeOptions();
@@ -32,6 +32,7 @@ public class Reusable {
             System.out.println("Please provide valid browser name");
         }
         driver.manage().window().maximize();
+        return driver;
     }
     public void openURl(String URL){
         driver.navigate().to(URL);
@@ -43,6 +44,7 @@ public class Reusable {
     }
 
     public static void click(String locator){
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         driver.findElement(By.xpath(locator)).click();
     }
 

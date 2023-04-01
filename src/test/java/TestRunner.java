@@ -6,11 +6,14 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = {"src/main/Features"}
 
-        ,plugin = {"html:target/cucumber-report.html"}
+        ,plugin = {"pretty","html:test-output"}
 
         , tags = ("@Test")
 
         , glue = {"cucumber.stepDefinitions"}
+
+//        , monochrome = true
+
 )
 
 public class TestRunner {

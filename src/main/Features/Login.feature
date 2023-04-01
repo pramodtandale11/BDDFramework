@@ -6,7 +6,7 @@ Feature: Test OrangeHRM login feature
     When User enters the orangeHRM"<URL>"
     And User enters Username "<username>" and Password "<password>"
     And User clicks on login button
-   Then User verifies the that he is logged in successfully.
+    Then User verifies the that he is logged in successfully.
     Examples:
       | browser | URL           | username           | password           |
       | browser | OrangeHRM_URL | OrangeHRM_username | OrangeHRM_password |

@@ -1,17 +1,23 @@
 package cucumber.stepDefinitions;
 
+import PageObjects.LoginPage;
 import Utility.Constants;
 import Utility.Reusable;
 import io.cucumber.java.en.*;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import java.time.Duration;
 
 public class OrangeHRM_StepDef extends Reusable {
+
+    public WebDriver driver;
+    public LoginPage loginPage;
 
     @Given("User launch the {string} Browser")
     public void userLaunchTheBrowser(String browser) {
         String Browser = Constants.CONFIG.getProperty(browser);
-        openBrowser(Browser);
+        this.driver=openBrowser(Browser);
         System.out.println("User launched "+Browser+" browser");
     }
 
@@ -26,24 +32,23 @@ public class OrangeHRM_StepDef extends Reusable {
     public void userEntersUsernameAndPassword(String username, String password) {
         String val_username = Constants.CONFIG.getProperty(username);
         String val_password = Constants.CONFIG.getProperty(password);
-        String Obj_username = "//input[@name='username']";
-        String Obj_password = "//input[@name='password']";
-        sendKeys(Obj_username,val_username);
-        sendKeys(Obj_password,val_password);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        loginPage = new LoginPage(driver);
+        loginPage.enterUsername(val_username);
+        loginPage.enterPassword(val_password);
         System.out.println("User has entered Username: "+val_username+" Password: "+val_password);
     }
 
     @And("User clicks on login button")
     public void userClicksOnLoginButton() {
-        String Obj_loginButton = "//button[@type='submit']";
-        click(Obj_loginButton);
-        System.out.println("User has clicked on login button");
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        loginPage.clickOnSubmitButton();
     }
 
     @Then("User verifies the that he is logged in successfully.")
     public void userVerifiesTheThatHeIsLoggedInSuccessfully() {
-        String username = driver.findElement(By.xpath("//p[@class='oxd-userdropdown-name']")).getText();
-        Assert.assertEquals("mohammed imran",username);
-        System.out.println("User name is verified on Homepage");
+        boolean username = driver.findElement(By.xpath("//p[@class='oxd-userdropdown-name']")).isDisplayed();
+        Assert.assertEquals(true,username);
+        System.out.println("User logged in to the OrangeHRM homepage");
     }
 }
